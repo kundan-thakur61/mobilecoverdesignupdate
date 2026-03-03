@@ -7,11 +7,6 @@
    ============================================ */
 @layer base {
   :root {
-    --app-gradient:
-      radial-gradient(circle at 20% 20%, rgba(236, 72, 153, 0.08), transparent 35%),
-      radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.08), transparent 35%),
-      linear-gradient(180deg, #f8fafc 0%, #f3e8ff 40%, #e0f2fe 100%);
-    
     /* Mobile-safe spacing variables */
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -53,8 +48,7 @@
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    background: var(--app-gradient);
-    /* REMOVED background-attachment: fixed — causes expensive repaint on every scroll on mobile */
+    background: #f8fafc;
     /* Safe area padding for notched devices */
     padding-top: var(--safe-top);
     padding-bottom: var(--safe-bottom);
@@ -121,12 +115,11 @@
 
   /* App shell */
   .app-shell {
-    background: var(--app-gradient);
+    background: #f8fafc;
   }
 
   .app-content {
-    background: rgba(255, 255, 255, 0.9);
-    /* REMOVED backdrop-filter — extremely expensive on mobile, causes jank */
+    background: #fff;
     @apply min-h-screen;
   }
 
@@ -225,13 +218,13 @@
     border-radius: 20px;
   }
 
-  /* Glass effect */
+  /* Glass effect — no backdrop-blur on mobile for performance */
   .glass {
-    @apply bg-white/80 backdrop-blur-sm;
+    @apply bg-white/90;
   }
 
   .glass-strong {
-    @apply bg-white/90 backdrop-blur-md;
+    @apply bg-white/95;
   }
 
   /* Text utilities */

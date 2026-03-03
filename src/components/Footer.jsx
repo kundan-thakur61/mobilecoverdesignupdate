@@ -1,8 +1,29 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiFacebook, FiInstagram, FiYoutube, FiMail, FiMapPin, FiPhone } from 'react-icons/fi';
+import { FiFacebook, FiInstagram, FiYoutube, FiMail, FiMapPin, FiPhone, FiSend } from 'react-icons/fi';
+import newsletterAPI from '../api/newsletterAPI';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [nlEmail, setNlEmail] = useState('');
+  const [nlLoading, setNlLoading] = useState(false);
+  const [nlSuccess, setNlSuccess] = useState(false);
+
+  const handleNewsletter = async (e) => {
+    e.preventDefault();
+    if (!nlEmail) return;
+    setNlLoading(true);
+    try {
+      await newsletterAPI.subscribe(nlEmail);
+      setNlSuccess(true);
+      setNlEmail('');
+      setTimeout(() => setNlSuccess(false), 5000);
+    } catch {
+      // silently fail in footer
+    } finally {
+      setNlLoading(false);
+    }
+  };
 
   return (
     <footer className="bg-gray-900 text-white" role="contentinfo">
@@ -207,6 +228,36 @@ const Footer = () => {
                 </div>
               </li>
             </ul>
+          </div>
+        </div>
+
+        {/* Newsletter Signup */}
+        <div className="border-t border-gray-800 pt-6 sm:pt-8 mb-6 sm:mb-8">
+          <div className="max-w-md mx-auto text-center">
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-2">Stay Updated</h3>
+            <p className="text-xs sm:text-sm text-gray-400 mb-4">Get exclusive deals, new designs & offers straight to your inbox.</p>
+            {nlSuccess ? (
+              <p className="text-green-400 text-sm font-medium">🎉 You're subscribed! Welcome to CoverGhar.</p>
+            ) : (
+              <form onSubmit={handleNewsletter} className="flex gap-2">
+                <input
+                  type="email"
+                  value={nlEmail}
+                  onChange={(e) => setNlEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                  className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-primary-500"
+                />
+                <button
+                  type="submit"
+                  disabled={nlLoading}
+                  className="bg-primary-600 text-white px-4 py-2.5 rounded-lg hover:bg-primary-700 transition disabled:opacity-50 flex items-center gap-1.5 text-sm font-medium"
+                >
+                  <FiSend className="w-4 h-4" />
+                  {nlLoading ? '...' : 'Subscribe'}
+                </button>
+              </form>
+            )}
           </div>
         </div>
 

@@ -244,6 +244,8 @@ const CategoryPage = () => {
         url={`/category/${normalizedCategory}`}
         type="website"
         schema={pageSchema?.[0]}
+        additionalSchemas={pageSchema?.[1] ? [pageSchema[1]] : []}
+        breadcrumbs={breadcrumbItems}
       />
 
       {/* Hero Section */}
@@ -362,14 +364,6 @@ const CategoryPage = () => {
           </div>
         </div>
       </section>
-
-      {/* FAQ Schema (separate from page schema) */}
-      {pageSchema?.[1] && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(pageSchema[1]) }}
-        />
-      )}
     </div>
   );
 };

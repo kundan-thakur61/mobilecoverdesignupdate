@@ -10,7 +10,8 @@ import paymentAPI from '../api/paymentAPI';
 import SEO from '../components/SEO';
 import { Helmet } from 'react-helmet-async';
 import { formatPrice, getProductImage } from '../utils/helpers';
-import { FiArrowLeft, FiLock, FiAlertCircle, FiCheck } from 'react-icons/fi';
+import { FiArrowLeft, FiLock, FiAlertCircle, FiCheck, FiTag, FiX } from 'react-icons/fi';
+import couponAPI from '../api/couponAPI';
 
 
 
@@ -37,6 +38,13 @@ const Checkout = () => {
 
   const [validationErrors, setValidationErrors] = useState({});
   const [touched, setTouched] = useState({});
+
+  // Coupon state
+  const [couponCode, setCouponCode] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponDiscount, setCouponDiscount] = useState(0);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponError, setCouponError] = useState('');
 
   // Shipping form state with empty initial values
   const [shipping, setShipping] = useState({
@@ -178,12 +186,40 @@ const Checkout = () => {
       return sum + (price * quantity);
     }, 0) || 0;
     
-    const shippingCost = subtotal > 500 ? 0 : 50; // Free shipping over ₹500
+    const shippingCost = (subtotal - couponDiscount) > 500 ? 0 : 50; // Free shipping over ₹500
     const tax = 0; // GST calculation if needed
-    const total = subtotal + shippingCost + tax;
+    const total = Math.max(0, subtotal - couponDiscount) + shippingCost + tax;
     
     return { subtotal, shipping: shippingCost, tax, total };
-  }, [cartItems]);
+  }, [cartItems, couponDiscount]);
+
+  // Handle coupon apply
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setCouponLoading(true);
+    setCouponError('');
+    try {
+      const res = await couponAPI.validateCoupon({ code: couponCode.trim(), orderTotal: subtotal });
+      const data = res.data?.data || res.data;
+      setAppliedCoupon(data);
+      setCouponDiscount(data.discount || 0);
+      toast.success(`Coupon applied! You save ${formatPrice(data.discount)}`);
+    } catch (err) {
+      const msg = err.response?.data?.message || 'Invalid coupon code';
+      setCouponError(msg);
+      setAppliedCoupon(null);
+      setCouponDiscount(0);
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setCouponCode('');
+    setAppliedCoupon(null);
+    setCouponDiscount(0);
+    setCouponError('');
+  };
 
   // Extract and normalize cart items
   const normalizeCartItems = () => {
@@ -384,6 +420,7 @@ const Checkout = () => {
         items: normalizedItems,
         total,
         paymentMethod,
+        couponCode: appliedCoupon ? couponCode.trim() : undefined,
         shippingAddress: {
           name: shipping.name,
           phone: shipping.phone,
@@ -691,14 +728,91 @@ const Checkout = () => {
                   </label>
                   
                   {/* UPI Direct */}
-                  
+                  <label className={`flex items-center gap-2 sm:gap-3 cursor-pointer p-3 sm:p-4 border-2 rounded-lg transition min-h-[44px] ${
+                    paymentMethod === 'upi' ? 'border-primary-600 bg-primary-50' : 'border-gray-200 hover:bg-gray-50'
+                  }`}>
+                    <input 
+                      type="radio" 
+                      name="pm" 
+                      checked={paymentMethod === 'upi'} 
+                      onChange={() => setPaymentMethod('upi')}
+                      className="w-4 h-4 text-primary-600"
+                    />
+                    <div className="flex-1">
+                      <div className="font-medium text-sm sm:text-base">UPI Direct</div>
+                      <div className="text-xs sm:text-sm text-gray-500">Pay directly via UPI ID (GPay, PhonePe, Paytm)</div>
+                    </div>
+                  </label>
                   
                   {/* Cash on Delivery */}
-                  
+                  <label className={`flex items-center gap-2 sm:gap-3 cursor-pointer p-3 sm:p-4 border-2 rounded-lg transition min-h-[44px] ${
+                    paymentMethod === 'cod' ? 'border-primary-600 bg-primary-50' : 'border-gray-200 hover:bg-gray-50'
+                  }`}>
+                    <input 
+                      type="radio" 
+                      name="pm" 
+                      checked={paymentMethod === 'cod'} 
+                      onChange={() => setPaymentMethod('cod')}
+                      className="w-4 h-4 text-primary-600"
+                    />
+                    <div className="flex-1">
+                      <div className="font-medium text-sm sm:text-base">Cash on Delivery</div>
+                      <div className="text-xs sm:text-sm text-gray-500">Pay when you receive the order</div>
+                    </div>
+                  </label>
                 </div>
 
                 {/* UPI Specific Fields */}
-                
+                {paymentMethod === 'upi' && (
+                  <div className="mt-4 p-4 bg-blue-50 rounded-lg space-y-3">
+                    <div>
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+                        UPI ID <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={upiId}
+                        onChange={(e) => {
+                          setUpiId(e.target.value);
+                          if (touched.upiId) {
+                            const error = validateField('upiId', e.target.value);
+                            setValidationErrors(prev => ({ ...prev, upiId: error }));
+                          }
+                        }}
+                        onBlur={() => handleBlur('upiId')}
+                        className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base min-h-[44px] ${
+                          validationErrors.upiId && touched.upiId ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                        placeholder="yourname@upi"
+                      />
+                      {validationErrors.upiId && touched.upiId && (
+                        <p className="mt-1 text-xs text-red-600 flex items-center gap-1">
+                          <FiAlertCircle className="w-3 h-3" />
+                          {validationErrors.upiId}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Preferred UPI App</label>
+                      <div className="flex gap-2 flex-wrap">
+                        {['GPay', 'PhonePe', 'Paytm', 'BHIM'].map(app => (
+                          <button
+                            key={app}
+                            type="button"
+                            onClick={() => setSelectedUpiApp(app)}
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${
+                              selectedUpiApp === app 
+                                ? 'bg-primary-600 text-white' 
+                                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                            }`}
+                          >
+                            {app}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Place Order Button */}
@@ -776,27 +890,66 @@ const Checkout = () => {
                     <span className="font-medium">{formatPrice(subtotal)}</span>
                   </div>
                   
+                  {couponDiscount > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-green-600 flex items-center gap-1">
+                        <FiTag className="w-3 h-3" />
+                        Discount ({appliedCoupon?.code})
+                      </span>
+                      <span className="font-medium text-green-600">-{formatPrice(couponDiscount)}</span>
+                    </div>
+                  )}
                   
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Shipping</span>
+                    <span className="font-medium">{shippingCost === 0 ? <span className="text-green-600">FREE</span> : formatPrice(shippingCost)}</span>
+                  </div>
                   
-                 
-                  
-                 
-                  
-                  
+                  <div className="flex justify-between text-lg font-bold pt-2 border-t">
+                    <span>Total</span>
+                    <span className="text-primary-600">{formatPrice(total)}</span>
+                  </div>
                 </div>
 
                 {/* Promo Code Section */}
                 <div className="mt-6 pt-6 border-t">
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      placeholder="Enter promo code"
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition">
-                      Apply
-                    </button>
-                  </div>
+                  {appliedCoupon ? (
+                    <div className="flex items-center justify-between bg-green-50 p-3 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <FiTag className="w-4 h-4 text-green-600" />
+                        <span className="text-sm font-medium text-green-700">{appliedCoupon.code}</span>
+                        <span className="text-xs text-green-600">(-{formatPrice(couponDiscount)})</span>
+                      </div>
+                      <button 
+                        onClick={handleRemoveCoupon}
+                        className="text-gray-400 hover:text-red-500 transition"
+                      >
+                        <FiX className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={couponCode}
+                          onChange={(e) => { setCouponCode(e.target.value.toUpperCase()); setCouponError(''); }}
+                          placeholder="Enter promo code"
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                        <button 
+                          onClick={handleApplyCoupon}
+                          disabled={couponLoading || !couponCode.trim()}
+                          className="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-900 transition disabled:opacity-50"
+                        >
+                          {couponLoading ? '...' : 'Apply'}
+                        </button>
+                      </div>
+                      {couponError && (
+                        <p className="mt-1 text-xs text-red-600">{couponError}</p>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

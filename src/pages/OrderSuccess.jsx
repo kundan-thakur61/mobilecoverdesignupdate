@@ -368,6 +368,18 @@ const OrderSuccess = () => {
               View All Orders
             </Link>
 
+            {order && (
+              <a
+                href={`${import.meta.env.VITE_API_URL || '/api'}/orders/${order._id}/invoice?format=html`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-green-700 border-2 border-green-300 rounded-xl font-bold hover:bg-green-50 hover:border-green-400 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                <FiCreditCard className="w-5 h-5" />
+                Download Invoice
+              </a>
+            )}
+
             <Link
               to="/products"
               className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-gray-900 border-2 border-gray-300 rounded-xl font-bold hover:bg-gray-50 hover:border-purple-300 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"

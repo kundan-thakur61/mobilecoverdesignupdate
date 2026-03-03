@@ -1,10 +1,49 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { FiShoppingCart, FiUser, FiMenu, FiX, FiSearch, FiHeart, FiTruck } from 'react-icons/fi';
 import { logout } from '../redux/slices/authSlice';
 import { selectCartItemCount } from '../redux/slices/cartSlice';
 import { selectWishlistCount } from '../redux/slices/wishlistSlice';
+
+// Inline SVG icons — eliminates react-icons from the critical bundle path
+const IconCart = ({ className }) => (
+  <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+  </svg>
+);
+const IconUser = ({ className }) => (
+  <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+    <circle cx="12" cy="7" r="4"/>
+  </svg>
+);
+const IconMenu = ({ className }) => (
+  <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18M3 6h18M3 18h18"/>
+  </svg>
+);
+const IconX = ({ className }) => (
+  <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M18 6 6 18M6 6l12 12"/>
+  </svg>
+);
+const IconSearch = ({ className }) => (
+  <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="11" cy="11" r="8"/><path strokeLinecap="round" strokeLinejoin="round" d="m21 21-4.35-4.35"/>
+  </svg>
+);
+const IconHeart = ({ className }) => (
+  <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+  </svg>
+);
+const IconTruck = ({ className }) => (
+  <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/>
+    <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+  </svg>
+);
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -129,7 +168,7 @@ const Header = () => {
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   aria-label="Search for mobile covers by brand, model, or design"
                 />
-                <FiSearch className="absolute left-3 top-2.5 text-gray-400" aria-hidden="true" />
+                <IconSearch className="absolute left-3 top-2.5 text-gray-400" aria-hidden="true" />
               </div>
             </form>
 
@@ -143,7 +182,7 @@ const Header = () => {
                 aria-label="Track your order"
                 title="Track Order"
               >
-                <FiTruck className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
+                <IconTruck className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
               </Link>
 
               {/* Cart */}
@@ -153,7 +192,7 @@ const Header = () => {
                 onClick={closeMenu}
                 aria-label={`Shopping cart with ${cartItemCount} items`}
               >
-                <FiShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
+                <IconCart className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
                 {cartItemCount > 0 && (
                   <span 
                     className="absolute -top-1 -right-1 bg-primary-600 text-white text-xs rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center font-semibold"
@@ -171,7 +210,7 @@ const Header = () => {
                 onClick={closeMenu}
                 aria-label={`Wishlist with ${wishlistCount} items`}
               >
-                <FiHeart className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
+                <IconHeart className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
                 {wishlistCount > 0 && (
                   <span 
                     className="absolute -top-1 -right-1 bg-primary-600 text-white text-xs rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center font-semibold"
@@ -190,7 +229,7 @@ const Header = () => {
                     aria-label="User account menu"
                     aria-haspopup="true"
                   >
-                    <FiUser className="w-6 h-6" aria-hidden="true" />
+                    <IconUser className="w-6 h-6" aria-hidden="true" />
                     <span className="hidden md:block text-sm font-medium">
                       {user?.name || 'Account'}
                     </span>
@@ -253,9 +292,9 @@ const Header = () => {
                 aria-controls="mobile-menu"
               >
                 {isMenuOpen ? (
-                  <FiX className="w-6 h-6" aria-hidden="true" />
+                  <IconX className="w-6 h-6" aria-hidden="true" />
                 ) : (
-                  <FiMenu className="w-6 h-6" aria-hidden="true" />
+                  <IconMenu className="w-6 h-6" aria-hidden="true" />
                 )}
               </button>
             </div>
@@ -303,7 +342,7 @@ const Header = () => {
                   className="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary-600 font-medium active:bg-gray-100 transition-colors flex items-center gap-2" 
                   onClick={closeMenu}
                 >
-                  <FiTruck className="w-5 h-5" aria-hidden="true" />
+                  <IconTruck className="w-5 h-5" aria-hidden="true" />
                   Track Order
                 </Link>
 
@@ -372,7 +411,7 @@ const Header = () => {
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
-                    <FiSearch className="absolute left-3 top-3 text-gray-400" aria-hidden="true" />
+                    <IconSearch className="absolute left-3 top-3 text-gray-400" aria-hidden="true" />
                   </div>
                 </form>
 

@@ -20,6 +20,24 @@ const adminAPI = {
   deleteTheme: (id) => axiosClient.delete(`/admin/themes/${id}`),
 
   activateTheme: (id) => axiosClient.put(`/admin/themes/${id}/activate`),
+
+  // Coupons
+  getCoupons: () => axiosClient.get('/admin/coupons'),
+  createCoupon: (data) => axiosClient.post('/admin/coupons', data),
+  updateCoupon: (id, data) => axiosClient.put(`/admin/coupons/${id}`, data),
+  deleteCoupon: (id) => axiosClient.delete(`/admin/coupons/${id}`),
+
+  // Analytics
+  getRevenueAnalytics: (params) => axiosClient.get('/admin/analytics/revenue', { params }),
+  getProductAnalytics: (params) => axiosClient.get('/admin/analytics/products', { params }),
+  getCustomerAnalytics: (params) => axiosClient.get('/admin/analytics/customers', { params }),
+
+  // Newsletter
+  getSubscribers: (params) => axiosClient.get('/admin/newsletter', { params }),
+
+  // Contacts
+  getContacts: (params) => axiosClient.get('/admin/contacts', { params }),
+  updateContactStatus: (id, data) => axiosClient.put(`/admin/contacts/${id}`, data),
 };
 
 export default adminAPI;

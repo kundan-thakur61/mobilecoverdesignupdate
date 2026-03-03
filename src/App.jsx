@@ -83,6 +83,10 @@ const AdminUsers = lazy(() => import('./pages/AdminUsers'));
 const AdminMobileManagement = lazy(() => import('./pages/AdminMobileManagement'));
 const AdminThemes = lazy(() => import('./pages/AdminThemes'));
 const AdminShipments = lazy(() => import('./pages/AdminShipments'));
+const AdminAnalytics = lazy(() => import('./pages/AdminAnalytics'));
+const AdminCoupons = lazy(() => import('./pages/AdminCoupons'));
+const ContactUs = lazy(() => import('./pages/ContactUs'));
+const SearchResults = lazy(() => import('./pages/SearchResults'));
 const CustomOrders = lazy(() => import('./pages/CustomOrders'));
 
 // Protected route wrapper
@@ -146,6 +150,8 @@ const router = createBrowserRouter([
       { path: 'track-order', element: <LazyPage><TrackOrder /></LazyPage> },
       { path: 'blog', element: <LazyPage><Blog /></LazyPage> },
       { path: 'blog/:slug', element: <LazyPage><BlogPost /></LazyPage> },
+      { path: 'contact', element: <LazyPage><ContactUs /></LazyPage> },
+      { path: 'search', element: <LazyPage><SearchResults /></LazyPage> },
       { path: 'privacy-policy', element: <LazyPage><PrivacyPolicy /></LazyPage> },
       { path: 'terms-conditions', element: <LazyPage><TermsConditions /></LazyPage> },
       { path: 'returns-refunds', element: <LazyPage><ReturnsAndRefunds /></LazyPage> },
@@ -172,6 +178,8 @@ const router = createBrowserRouter([
       { path: 'admin/users', element: <AdminRoute><LazyPage><AdminUsers /></LazyPage></AdminRoute> },
       { path: 'admin/custom-orders', element: <AdminRoute><LazyPage><AdminCustomOrders /></LazyPage></AdminRoute> },
       { path: 'admin/shipments', element: <AdminRoute><LazyPage><AdminShipments /></LazyPage></AdminRoute> },
+      { path: 'admin/analytics', element: <AdminRoute><LazyPage><AdminAnalytics /></LazyPage></AdminRoute> },
+      { path: 'admin/coupons', element: <AdminRoute><LazyPage><AdminCoupons /></LazyPage></AdminRoute> },
       { path: 'custom-orders', element: <ProtectedRoute><LazyPage><CustomOrders /></LazyPage></ProtectedRoute> },
     ],
   },
@@ -181,19 +189,21 @@ function App() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const user = useSelector((state) => state.auth.user);
-  const loading = useSelector((state) => state.auth.loading);
 
   // Non-critical init is handled at module level via requestIdleCallback
   // (error suppression & dev checks)
 
-  // On first mount, if a token exists but user isn't loaded yet, fetch profile
+  // Defer auth & wishlist fetch to idle time — NEVER block initial render
   useEffect(() => {
-    if (token && !user) {
-      dispatch(getUserProfile());
-    }
-    // when user is available, load wishlist
-    if (token && user) {
-      dispatch(fetchWishlist());
+    if (!token) return;
+    const doFetch = () => {
+      if (!user) dispatch(getUserProfile());
+      if (user) dispatch(fetchWishlist());
+    };
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(doFetch, { timeout: 2000 });
+    } else {
+      setTimeout(doFetch, 100);
     }
   }, [dispatch, token, user]);
 
@@ -210,11 +220,8 @@ function App() {
     };
   }, [dispatch]);
 
-  // If we have a token but are still loading the user profile, show a full-page loader
-  if (token && loading && !user) {
-    return <PageLoader />;
-  }
-
+  // NEVER block render with a PageLoader — render the app shell + hero immediately.
+  // Auth state resolves in the background; protected routes handle their own loading.
   return (
     <RouterProvider router={router} future={{ v7_startTransition: true, v7_relativeSplatPath: true }} />
   );

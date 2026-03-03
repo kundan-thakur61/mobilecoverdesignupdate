@@ -7,21 +7,26 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on app start
+    // Defer token validation to idle time — never block initial render/FCP
     const token = localStorage.getItem('token');
     if (token) {
-      // Validate token and fetch user data
-      authAPI.getMe()
-        .then(response => {
-          setUser(response.user || response);
-        })
-        .catch(() => {
-          // Token invalid, remove it
-          localStorage.removeItem('token');
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      const validate = () => {
+        authAPI.getMe()
+          .then(response => {
+            setUser(response.user || response);
+          })
+          .catch(() => {
+            localStorage.removeItem('token');
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      };
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(validate, { timeout: 2000 });
+      } else {
+        setTimeout(validate, 100);
+      }
     } else {
       setLoading(false);
     }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import orderAPI from '../api/orderAPI';
+import SEO from '../components/SEO';
 
 export default function CustomOrders() {
   const [orders, setOrders] = useState([]);
@@ -24,6 +25,13 @@ export default function CustomOrders() {
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-8">
+      <SEO
+        title="My Custom Orders | CoverGhar"
+        description="View and track all your custom mobile cover orders at CoverGhar."
+        keywords="custom orders, my orders, coverghar orders, mobile cover orders"
+        url="/custom-orders"
+        noindex
+      />
       <h2 className="text-2xl font-bold mb-6 text-center">My Custom Orders</h2>
       {loading ? (
         <div className="text-center py-8">Loading...</div>

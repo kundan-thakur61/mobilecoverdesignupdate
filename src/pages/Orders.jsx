@@ -181,6 +181,14 @@ export default function Orders() {
                   <div className="font-medium">{formatPrice(order.total || order.amount || 0)}</div>
                   <div className="mt-2 space-x-2">
                     <Link to={`/order-success/${orderId}`} className="text-sm text-primary-600">View</Link>
+                    <a
+                      href={`${import.meta.env.VITE_API_URL || '/api'}/orders/${orderId}/invoice?format=html`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-green-600 hover:underline"
+                    >
+                      Invoice
+                    </a>
                     {hasShipment && (
                       <button
                         onClick={() => setExpandedOrderId(isExpanded ? null : orderId)}

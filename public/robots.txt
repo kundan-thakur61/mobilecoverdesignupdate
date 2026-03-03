@@ -1,10 +1,19 @@
+# CoverGhar Robots.txt — Custom Mobile Covers
+# https://www.coverghar.in
+
 User-agent: *
 Allow: /
-Allow: /blog/
 Allow: /products/
 Allow: /themes/
 Allow: /collection/
 Allow: /category/
+Allow: /blog/
+Allow: /contact
+Allow: /track-order
+Allow: /search
+Allow: /customizer
+Allow: /custom-mobile
+
 Disallow: /admin/
 Disallow: /cart
 Disallow: /checkout
@@ -13,8 +22,11 @@ Disallow: /orders
 Disallow: /wishlist
 Disallow: /my-designs
 Disallow: /custom-designs
+Disallow: /custom-orders
 Disallow: /login
 Disallow: /signup
+Disallow: /order-success/
+Disallow: /api/
 
 # Crawl-delay for polite crawling
 User-agent: AhrefsBot
@@ -23,4 +35,12 @@ Crawl-delay: 10
 User-agent: SemrushBot
 Crawl-delay: 10
 
+User-agent: MJ12bot
+Crawl-delay: 15
+
+User-agent: DotBot
+Crawl-delay: 15
+
+# Sitemaps
 Sitemap: https://www.coverghar.in/sitemap.xml
+Sitemap: https://www.coverghar.in/api/seo/sitemap.xml

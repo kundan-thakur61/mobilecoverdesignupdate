@@ -1,6 +1,7 @@
 import { useRef, useCallback, memo } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { getHomePageSchemas, generateFAQSchema, generateHowToSchema } from '../utils/seoHelpers';
 import './Home.css';
 
 // Cloudinary AVIF URL builder for hero images (critical path - no external component)
@@ -8,14 +9,14 @@ const heroImgUrl = (publicId, w, q = 60) =>
   `https://res.cloudinary.com/dwmytphop/image/upload/f_avif,q_${q},w_${w},c_limit/${publicId}`;
 
 const heroSrcSet = (publicId) =>
-  [320, 480, 640, 768, 1024].map(w => `${heroImgUrl(publicId, w)} ${w}w`).join(', ');
+  [320, 480, 768].map(w => `${heroImgUrl(publicId, w)} ${w}w`).join(', ');
 
 const PremiumCard = memo(({ image, title, subtitle, badge, priority = false }) => {
   const cardRef = useRef(null);
   const overlayRef = useRef(null);
   const rafRef = useRef(null);
 
-  // Mouse tracking with direct DOM manipulation (no re-renders)
+  // Mouse tracking with direct DOM manipulation (no re-renders) — desktop only
   const handleMouseMove = useCallback((e) => {
     if (!cardRef.current || !overlayRef.current || window.innerWidth < 768) return;
     if (rafRef.current) return;
@@ -33,46 +34,34 @@ const PremiumCard = memo(({ image, title, subtitle, badge, priority = false }) =
     <div
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      className="group relative overflow-hidden rounded-2xl sm:rounded-3xl cursor-pointer animate-fade-in-up"
+      className="group relative overflow-hidden rounded-2xl sm:rounded-3xl cursor-pointer"
     >
-      <div className="relative">
-        <div className="relative" style={{ aspectRatio: '16/10' }}>
-          {/* Native <img> for hero cards — eliminates JS overhead for LCP-critical images */}
-          <img
-            src={heroImgUrl(image, 480)}
-            srcSet={heroSrcSet(image)}
-            sizes="(min-width: 1024px) 45vw, (min-width: 640px) 90vw, 100vw"
-            alt={title}
-            width="768"
-            height="480"
-            loading={priority ? 'eager' : 'lazy'}
-            decoding={priority ? 'sync' : 'async'}
-            fetchPriority={priority ? 'high' : 'auto'}
-            className="w-full h-full object-cover"
-            style={{ aspectRatio: '16/10' }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-          <div
-            ref={overlayRef}
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 hidden sm:block"
-          ></div>
-          {badge && (
-            <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-white/90 backdrop-blur-sm text-gray-900 px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold shadow-lg">
-              {badge}
-            </div>
-          )}
-          <div className="absolute bottom-2 left-2 right-2 sm:bottom-4 sm:left-4 sm:right-4 text-white">
-            <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1 sm:mb-2">{title}</h3>
-            {subtitle && <p className="text-xs sm:text-sm opacity-90 line-clamp-2 sm:line-clamp-none">{subtitle}</p>}
+      <div className="relative" style={{ aspectRatio: '16/10' }}>
+        <img
+          src={heroImgUrl(image, 480)}
+          srcSet={heroSrcSet(image)}
+          sizes="(min-width: 1024px) 45vw, 90vw"
+          alt={title}
+          width="480"
+          height="300"
+          loading={priority ? 'eager' : 'lazy'}
+          decoding={priority ? 'sync' : 'async'}
+          fetchPriority={priority ? 'high' : 'auto'}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+        <div
+          ref={overlayRef}
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 hidden md:block"
+        />
+        {badge && (
+          <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-white/90 text-gray-900 px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold shadow-lg">
+            {badge}
           </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 bg-gradient-to-t from-black/60 to-transparent backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-full group-hover:translate-y-0 hidden sm:block">
-          <div className="flex items-center justify-between text-white text-sm">
-            <span>Click to explore</span>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
+        )}
+        <div className="absolute bottom-2 left-2 right-2 sm:bottom-4 sm:left-4 sm:right-4 text-white">
+          <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1">{title}</h3>
+          {subtitle && <p className="text-xs sm:text-sm opacity-90 line-clamp-2">{subtitle}</p>}
         </div>
       </div>
     </div>
@@ -83,14 +72,14 @@ PremiumCard.displayName = 'PremiumCard';
 
 function PremiumCardSection() {
   return (
-    <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-b from-white via-purple-50/30 to-white relative overflow-hidden">
+    <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 xl:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           <Link to="/themes">
             <PremiumCard
               image="v1768802259/main_background_theame_aqmriv.png"
               title="Pre-Designed Themes"
-              subtitle="Explore 1000+ professionally crafted designs across anime, sports, nature, and abstract categories"
+              subtitle="Explore 1000+ professionally crafted designs"
               badge="🎨 1000+ Designs"
               priority
             />
@@ -99,14 +88,14 @@ function PremiumCardSection() {
             <PremiumCard
               image="v1768802258/Customised_theam_my15vv.png"
               title="Custom Design"
-              subtitle="Upload your photos and create a one-of-a-kind mobile cover with our advanced design editor"
+              subtitle="Upload your photos and create unique mobile covers"
               badge="✨ Your Photos"
               priority
             />
           </Link>
         </div>
 
-        <div className="mt-8 sm:mt-12 lg:mt-16 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 animate-fade-in animation-delay-800">
+        <div className="mt-8 sm:mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           {[
             { icon: '🎯', text: 'Perfect Fit', desc: 'All Models' },
             { icon: '⚡', text: 'Quick Print', desc: '24-48 Hours' },
@@ -115,11 +104,11 @@ function PremiumCardSection() {
           ].map((feature, i) => (
             <div 
               key={i}
-              className="text-center p-3 sm:p-4 md:p-6 bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-100"
+              className="text-center p-3 sm:p-4 bg-white rounded-xl shadow-sm border border-gray-100"
             >
-              <div className="text-2xl sm:text-3xl md:text-4xl mb-1 sm:mb-2 md:mb-3">{feature.icon}</div>
-              <div className="font-bold text-gray-900 text-xs sm:text-sm md:text-base mb-0.5 sm:mb-1">{feature.text}</div>
-              <div className="text-xs sm:text-sm text-gray-600 hidden sm:block">{feature.desc}</div>
+              <div className="text-2xl sm:text-3xl mb-1 sm:mb-2">{feature.icon}</div>
+              <div className="font-bold text-gray-900 text-xs sm:text-sm">{feature.text}</div>
+              <div className="text-xs text-gray-600 hidden sm:block">{feature.desc}</div>
             </div>
           ))}
         </div>
@@ -130,25 +119,23 @@ function PremiumCardSection() {
 
 function CTASection() {
   return (
-    <section className="relative text-white py-10 sm:py-16 md:py-20 overflow-hidden bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900">
+    <section className="relative text-white py-10 sm:py-16 overflow-hidden hero-gradient">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
-        <div className="flex flex-col gap-3 sm:gap-4 justify-center animate-fade-in-up animation-delay-800">
-          {/* Primary CTA - Full width on mobile */}
+        <div className="flex flex-col gap-3 sm:gap-4 justify-center">
           <Link
             to="/customizer"
-            className="group inline-flex items-center justify-center bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base md:text-lg hover:from-yellow-300 hover:to-yellow-400 transition-all duration-300 shadow-xl sm:shadow-2xl hover:shadow-yellow-400/50 hover:scale-105 transform min-h-[44px]"
+            className="inline-flex items-center justify-center bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base hover:from-yellow-300 hover:to-yellow-400 transition-colors shadow-lg min-h-[44px]"
           >
             <span>Design Your Cover</span>
-            <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </Link>
           
-          {/* Secondary CTAs - Row on tablet/desktop */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Link
               to="/products"
-              className="inline-flex items-center justify-center bg-white/10 backdrop-blur-md text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base md:text-lg hover:bg-white/20 transition-all duration-300 border-2 border-white/30 hover:border-white/50 hover:scale-105 transform min-h-[44px]"
+              className="inline-flex items-center justify-center bg-white/10 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base hover:bg-white/20 transition-colors border border-white/30 min-h-[44px]"
             >
               Browse Designs
             </Link>
@@ -156,9 +143,9 @@ function CTASection() {
               href="https://wa.me/7827205492?text=Hi%20%F0%9F%91%8B%20CoverGhar%20Team%2C%0A%0AI%20want%20to%20design%20a%20custom%20mobile%20cover.%0APlease%20guide%20me%20with%20designs%2C%20price%20%26%20delivery%20details%20%F0%9F%98%8A"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center justify-center bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base md:text-lg hover:from-green-400 hover:to-emerald-400 transition-all duration-300 shadow-xl sm:shadow-2xl hover:shadow-green-500/50 hover:scale-105 transform min-h-[44px]"
+              className="inline-flex items-center justify-center bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base hover:from-green-400 hover:to-emerald-400 transition-colors shadow-lg min-h-[44px]"
             >
-              <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2 group-hover:rotate-12 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" />
               </svg>
               WhatsApp
@@ -166,16 +153,14 @@ function CTASection() {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-3 sm:gap-4 md:gap-6 pt-4 sm:pt-6 justify-center animate-fade-in animation-delay-1000">
+        <div className="flex flex-wrap gap-3 sm:gap-4 pt-4 sm:pt-6 justify-center">
           {[
-            { icon: '🛡️', text: 'Premium Quality', color: 'from-blue-500 to-cyan-500' },
-            { icon: '🚚', text: 'Fast Delivery', color: 'from-purple-500 to-pink-500' },
-            { icon: '⭐', text: '4.8/5 Rating', color: 'from-yellow-500 to-orange-500' }
+            { icon: '🛡️', text: 'Premium Quality' },
+            { icon: '🚚', text: 'Fast Delivery' },
+            { icon: '⭐', text: '4.8/5 Rating' }
           ].map((item, i) => (
-            <div key={i} className="flex items-center gap-2 sm:gap-3 group cursor-pointer">
-              <div className={`p-2 sm:p-3 bg-gradient-to-br ${item.color} rounded-lg sm:rounded-xl backdrop-blur-sm group-hover:scale-110 transition-all shadow-md sm:shadow-lg`}>
-                <span className="text-lg sm:text-xl md:text-2xl">{item.icon}</span>
-              </div>
+            <div key={i} className="flex items-center gap-2">
+              <span className="text-lg sm:text-xl">{item.icon}</span>
               <span className="text-xs sm:text-sm font-semibold">{item.text}</span>
             </div>
           ))}
@@ -212,47 +197,65 @@ function PremiumHero() {
     }
   };
 
+  // Advanced schemas: Organization, WebSite, LocalBusiness, Navigation, FAQ, HowTo
+  const advancedSchemas = [
+    ...getHomePageSchemas(),
+    generateFAQSchema([
+      { question: 'How do I create a custom mobile cover?', answer: 'Simply select your phone model, upload your photo or choose from our 1000+ design templates, customize it, and place your order. Delivered within 5-7 days across India.' },
+      { question: 'What is the price of custom mobile covers?', answer: 'Our custom mobile covers start from just ₹199. Prices vary based on the phone model and case type (hard case, soft case, glass case).' },
+      { question: 'Which phone models are supported?', answer: 'We support all major brands including Apple iPhone (15, 14, 13, 12, SE), Samsung Galaxy (S24, S23, A54, M34), OnePlus, Realme, Vivo, Oppo, Xiaomi, Poco, and 500+ models.' },
+      { question: 'How long does delivery take?', answer: 'We dispatch within 24 hours from our Neemuch (M.P.) studio. Fast shipping across India with delivery within 5-7 business days. Track your order anytime.' },
+      { question: 'Is the print quality durable?', answer: 'Yes! We use 3D sublimation printing with UV anti-fade coating. All covers come with a quality guarantee and are scratch-resistant.' },
+      { question: 'Can I return or exchange my order?', answer: 'Yes, we offer easy 7-day returns for manufacturing defects. Custom designs are non-returnable unless damaged. Visit our Returns & Refunds page for details.' },
+    ]),
+    generateHowToSchema(),
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900">
+    <div className="bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900">
       <SEO
         title="Custom Mobile Covers Online @₹199 | Design Your Phone Case — CoverGhar"
         description="Create personalized mobile covers with your photos at ₹199. Premium quality phone cases for iPhone, Samsung, OnePlus & all brands. Fast shipping across India. Design now!"
-        keywords="custom mobile covers, personalized phone cases, photo phone covers, design your own phone case, mobile cover online India, CoverGhar, custom phone case India, mobile back cover"
+        keywords="custom mobile covers, personalized phone cases, photo phone covers, design your own phone case, mobile cover online India, CoverGhar, custom phone case India, mobile back cover, buy mobile cover, phone case printing"
         url="/"
         type="website"
         schema={homeSchema}
+        additionalSchemas={advancedSchemas}
+        imageAlt="CoverGhar - Custom Mobile Covers Online India"
+        breadcrumbs={[{ name: 'Home', url: '/' }]}
       />
+      {/* HERO SECTION — renders instantly, no API dependency */}
       <section className="relative text-white py-12 sm:py-16 md:py-20 overflow-hidden">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="space-y-4 sm:space-y-6 animate-fade-in-up text-center lg:text-left">
+            <div className="space-y-4 sm:space-y-6 text-center lg:text-left">
               <div className="inline-block">
-                <span className="bg-yellow-400/20 text-yellow-300 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold backdrop-blur-sm border border-yellow-400/30 animate-pulse-slow">
+                <span className="hero-badge">
                   ✨ Premium Quality Guaranteed
                 </span>
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
-                <span className="inline-block animate-slide-in-left bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
+              <h1 className="hero-h1">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
                   Create Custom
                 </span>
                 <br />
-                <span className="inline-block animate-slide-in-left animation-delay-200 bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-pink-200">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-pink-200">
                   Mobile Covers
                 </span>
                 <br />
-                <span className="block text-yellow-300 animate-slide-in-left animation-delay-400 drop-shadow-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+                <span className="block text-yellow-300 text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
                   Starting at ₹199
                 </span>
               </h1>
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 max-w-lg animate-fade-in animation-delay-600 leading-relaxed mx-auto lg:mx-0">
+              <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-lg leading-relaxed mx-auto lg:mx-0">
                 Design personalized phone cases with your photos. Premium quality printing for all phone models. Fast delivery across India.
               </p>
               
-              {/* Mobile CTA buttons - visible only on mobile */}
+              {/* Mobile CTA buttons */}
               <div className="flex flex-col gap-3 mt-4 lg:hidden">
                 <Link
                   to="/customizer"
-                  className="inline-flex items-center justify-center bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-6 py-3 rounded-xl font-semibold text-sm hover:from-yellow-300 hover:to-yellow-400 transition-all min-h-[44px]"
+                  className="inline-flex items-center justify-center bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-6 py-3 rounded-xl font-semibold text-sm min-h-[44px]"
                 >
                   Design Your Cover
                   <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -261,17 +264,17 @@ function PremiumHero() {
                 </Link>
                 <Link
                   to="/products"
-                  className="inline-flex items-center justify-center bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-white/20 transition-all border border-white/30 min-h-[44px]"
+                  className="inline-flex items-center justify-center bg-white/10 text-white px-6 py-3 rounded-xl font-semibold text-sm border border-white/30 min-h-[44px]"
                 >
                   Browse Designs
                 </Link>
               </div>
             </div>
-            {/* Desktop CTA — replaces the "3D Preview" placeholder to reduce DOM nodes */}
+            {/* Desktop CTA */}
             <div className="hidden lg:flex flex-col gap-4 items-center justify-center">
               <Link
                 to="/customizer"
-                className="inline-flex items-center justify-center bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-8 py-4 rounded-xl font-semibold text-lg hover:from-yellow-300 hover:to-yellow-400 transition-all shadow-2xl hover:shadow-yellow-400/50 hover:scale-105 transform"
+                className="inline-flex items-center justify-center bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-8 py-4 rounded-xl font-semibold text-lg shadow-lg"
               >
                 Design Your Cover
                 <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -280,7 +283,7 @@ function PremiumHero() {
               </Link>
               <Link
                 to="/products"
-                className="inline-flex items-center justify-center bg-white/10 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white/20 transition-all border-2 border-white/30"
+                className="inline-flex items-center justify-center bg-white/10 text-white px-8 py-4 rounded-xl font-semibold text-lg border-2 border-white/30"
               >
                 Browse Designs
               </Link>

@@ -1,69 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://www.coverghar.in/</loc>
+    <lastmod>2026-03-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://www.coverghar.in/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.coverghar.in/" />
+    <image:image>
+      <image:loc>https://res.cloudinary.com/dwmytphop/image/upload/v1766473299/ChatGPT_Image_Dec_23_2025_12_30_26_PM_oyeb3g.jpg</image:loc>
+      <image:title>CoverGhar - Custom Mobile Covers Online India</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://www.coverghar.in/products</loc>
+    <lastmod>2026-03-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
-    
   </url>
   <url>
     <loc>https://www.coverghar.in/themes</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    
+    <lastmod>2026-03-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.coverghar.in/customizer</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.coverghar.in/custom-mobile</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.coverghar.in/login</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-    
+    <loc>https://www.coverghar.in/blog</loc>
+    <lastmod>2026-03-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.coverghar.in/privacy-policy</loc>
+    <loc>https://www.coverghar.in/contact</loc>
+    <lastmod>2026-02-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-    
-  </url>
-  <url>
-    <loc>https://www.coverghar.in/terms-conditions</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-    
-  </url>
-  <url>
-    <loc>https://www.coverghar.in/returns-refunds</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-    
-  </url>
-  <url>
-    <loc>https://www.coverghar.in/shipping-policy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-    
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.coverghar.in/track-order</loc>
+    <lastmod>2026-02-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-    
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.coverghar.in/search</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.coverghar.in/category/iphone</loc>
+    <lastmod>2026-03-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.coverghar.in/category/samsung</loc>
+    <lastmod>2026-03-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.coverghar.in/category/oneplus</loc>
+    <lastmod>2026-03-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.coverghar.in/category/realme</loc>
+    <lastmod>2026-03-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.coverghar.in/category/vivo</loc>
+    <lastmod>2026-03-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.coverghar.in/category/oppo</loc>
+    <lastmod>2026-03-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.coverghar.in/category/xiaomi</loc>
+    <lastmod>2026-03-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.coverghar.in/privacy-policy</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.coverghar.in/terms-conditions</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.coverghar.in/returns-refunds</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.coverghar.in/shipping-policy</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>
