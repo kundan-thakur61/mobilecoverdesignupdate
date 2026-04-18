@@ -46,7 +46,7 @@ const PremiumCard = memo(({ image, title, subtitle, badge, priority = false }) =
           height="300"
           loading={priority ? 'eager' : 'lazy'}
           decoding={priority ? 'sync' : 'async'}
-          fetchPriority={priority ? 'high' : 'auto'}
+          fetchpriority={priority ? 'high' : 'auto'}
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
@@ -117,6 +117,148 @@ function PremiumCardSection() {
   );
 }
 
+/* ─── India Trust Signals Section ──────────────────────────────────────────── */
+function TrustSignals() {
+  const signals = [
+    { icon: '💵', title: 'Cash on Delivery', desc: 'COD available poore India mein' },
+    { icon: '🚚', title: 'Free Delivery', desc: 'No hidden charges, free shipping' },
+    { icon: '🇮🇳', title: 'Made in India', desc: 'Proudly designed & printed in India' },
+    { icon: '📱', title: 'WhatsApp Support', desc: 'Instant reply on WhatsApp' },
+    { icon: '🔄', title: '7-Day Easy Returns', desc: 'Hassle-free returns guaranteed' },
+    { icon: '⭐', title: '4.8/5 Rating', desc: '50,000+ happy customers' },
+  ];
+
+  return (
+    <section className="py-10 sm:py-14 bg-gradient-to-br from-green-50 to-emerald-50">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-2">
+          Why 50,000+ Indians Trust CoverGhar
+        </h2>
+        <p className="text-center text-gray-600 mb-8 text-sm sm:text-base">
+          Premium quality covers at affordable prices — COD available! 🇮🇳
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          {signals.map((s, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+            >
+              <div className="text-3xl mb-2">{s.icon}</div>
+              <div className="font-semibold text-gray-900 text-sm">{s.title}</div>
+              <div className="text-xs text-gray-500 mt-1">{s.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Popular Categories Section ───────────────────────────────────────────── */
+function PopularCategories() {
+  const categories = [
+    { name: 'iPhone Covers', path: '/category/iphone', emoji: '🍎' },
+    { name: 'Samsung Covers', path: '/category/samsung', emoji: '📱' },
+    { name: 'OnePlus Covers', path: '/category/oneplus', emoji: '⚡' },
+    { name: 'Xiaomi / Redmi', path: '/category/xiaomi', emoji: '🔥' },
+    { name: 'Realme Covers', path: '/category/realme', emoji: '🎯' },
+    { name: 'Vivo Covers', path: '/category/vivo', emoji: '✨' },
+    { name: 'Oppo Covers', path: '/category/oppo', emoji: '💎' },
+    { name: 'Custom Covers', path: '/customizer', emoji: '🎨' },
+  ];
+
+  return (
+    <section className="py-10 sm:py-14 bg-white">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-2">
+          Shop by Phone Brand
+        </h2>
+        <p className="text-center text-gray-600 mb-8 text-sm sm:text-base">
+          500+ phone models ke liye covers available hain — apna brand choose karo!
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          {categories.map((cat) => (
+            <Link
+              key={cat.path}
+              to={cat.path}
+              className="group flex flex-col items-center p-4 sm:p-6 bg-gray-50 rounded-2xl border border-gray-100 hover:border-purple-300 hover:bg-purple-50 transition-all"
+            >
+              <span className="text-3xl sm:text-4xl mb-2 group-hover:scale-110 transition-transform">{cat.emoji}</span>
+              <span className="font-semibold text-gray-900 text-sm sm:text-base">{cat.name}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Hinglish FAQ Section ─────────────────────────────────────────────────── */
+const HOME_FAQS = [
+  {
+    question: 'Custom mobile cover kitne din mein deliver hota hai?',
+    answer: 'CoverGhar ke custom covers 3-7 working days mein deliver ho jaate hain. Metro cities mein usually 3-4 din lagta hai. Order place hone ke baad tracking link WhatsApp pe mil jaayega.'
+  },
+  {
+    question: 'Kya CoverGhar pe COD (Cash on Delivery) available hai?',
+    answer: 'Haan! CoverGhar pe Cash on Delivery (COD) available hai poore India mein. Aap bina advance payment ke order kar sakte hain. UPI, Credit/Debit Card, Net Banking bhi available hai.'
+  },
+  {
+    question: 'Cover ki quality kaisi hoti hai? Kitne din chalega?',
+    answer: 'Humare covers premium TPU + polycarbonate materials se bane hain. HD UV printing technology use hoti hai jo scratch-resistant hai. Military-grade shockproof protection milta hai. 6 month warranty bhi dete hain quality pe.'
+  },
+  {
+    question: 'Kaun kaun se phone models ke covers milte hain?',
+    answer: 'Hum 500+ phone models support karte hain — iPhone 16/15/14/13, Samsung Galaxy S25/S24/A55, OnePlus 13/12/Nord, Redmi Note 14/13 Pro, Poco X6, Realme 12 Pro, Vivo V40, Oppo Reno 12, aur bahut saare aur models.'
+  },
+  {
+    question: 'Apna photo kaise lagaye mobile cover pe?',
+    answer: 'Bahut easy hai! Humari website pe "Design Your Cover" pe click karo, apna phone model choose karo, photo upload karo, preview dekho aur order karo — bas! 3 simple steps mein apna custom cover ready.'
+  },
+  {
+    question: 'Return ya exchange kaise hota hai?',
+    answer: '7-day easy return policy hai manufacturing defects ke liye. Agar cover mein koi defect hai toh WhatsApp pe photo bhejo aur hum replacement ya refund process kar denge. Custom designs non-returnable hain unless damaged.'
+  },
+];
+
+function FAQSection() {
+  return (
+    <section className="py-10 sm:py-14 bg-gray-50">
+      <div className="max-w-3xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-2">
+          Frequently Asked Questions
+        </h2>
+        <p className="text-center text-gray-600 mb-8 text-sm sm:text-base">
+          Koi sawaal hai? Yahan check karo ya WhatsApp pe poocho! 💬
+        </p>
+        <div className="space-y-3">
+          {HOME_FAQS.map((faq, i) => (
+            <details
+              key={i}
+              className="group bg-white rounded-xl border border-gray-200 overflow-hidden"
+            >
+              <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-medium text-gray-900 hover:bg-gray-50 transition-colors text-sm sm:text-base">
+                <span>{faq.question}</span>
+                <svg
+                  className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-5 pb-4 text-gray-600 leading-relaxed text-sm">
+                {faq.answer}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function CTASection() {
   return (
     <section className="relative text-white py-10 sm:py-16 overflow-hidden hero-gradient">
@@ -148,7 +290,7 @@ function CTASection() {
               <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" />
               </svg>
-              WhatsApp
+              WhatsApp pe Order Karo
             </a>
           </div>
         </div>
@@ -156,8 +298,9 @@ function CTASection() {
         <div className="flex flex-wrap gap-3 sm:gap-4 pt-4 sm:pt-6 justify-center">
           {[
             { icon: '🛡️', text: 'Premium Quality' },
-            { icon: '🚚', text: 'Fast Delivery' },
-            { icon: '⭐', text: '4.8/5 Rating' }
+            { icon: '🚚', text: 'Free Delivery' },
+            { icon: '⭐', text: '4.8/5 Rating' },
+            { icon: '💵', text: 'COD Available' },
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-2">
               <span className="text-lg sm:text-xl">{item.icon}</span>
@@ -175,7 +318,7 @@ function PremiumHero() {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "CoverGhar — Custom Mobile Covers Online India",
-    "description": "Create personalized mobile covers with your photos at ₹199. Premium quality phone cases for iPhone, Samsung, OnePlus & all brands. Fast shipping across India.",
+    "description": "Design apna custom mobile cover! Premium shockproof covers with HD printing. ₹199 se start. Free delivery all India. 1000+ designs. COD available.",
     "url": "https://www.coverghar.in",
     "mainEntity": {
       "@type": "Product",
@@ -200,14 +343,7 @@ function PremiumHero() {
   // Advanced schemas: Organization, WebSite, LocalBusiness, Navigation, FAQ, HowTo
   const advancedSchemas = [
     ...getHomePageSchemas(),
-    generateFAQSchema([
-      { question: 'How do I create a custom mobile cover?', answer: 'Simply select your phone model, upload your photo or choose from our 1000+ design templates, customize it, and place your order. Delivered within 5-7 days across India.' },
-      { question: 'What is the price of custom mobile covers?', answer: 'Our custom mobile covers start from just ₹199. Prices vary based on the phone model and case type (hard case, soft case, glass case).' },
-      { question: 'Which phone models are supported?', answer: 'We support all major brands including Apple iPhone (15, 14, 13, 12, SE), Samsung Galaxy (S24, S23, A54, M34), OnePlus, Realme, Vivo, Oppo, Xiaomi, Poco, and 500+ models.' },
-      { question: 'How long does delivery take?', answer: 'We dispatch within 24 hours from our Neemuch (M.P.) studio. Fast shipping across India with delivery within 5-7 business days. Track your order anytime.' },
-      { question: 'Is the print quality durable?', answer: 'Yes! We use 3D sublimation printing with UV anti-fade coating. All covers come with a quality guarantee and are scratch-resistant.' },
-      { question: 'Can I return or exchange my order?', answer: 'Yes, we offer easy 7-day returns for manufacturing defects. Custom designs are non-returnable unless damaged. Visit our Returns & Refunds page for details.' },
-    ]),
+    generateFAQSchema(HOME_FAQS.map(f => ({ question: f.question, answer: f.answer }))),
     generateHowToSchema(),
   ];
 
@@ -215,13 +351,13 @@ function PremiumHero() {
     <div className="bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900">
       <SEO
         title="Custom Mobile Covers Online @₹199 | Design Your Phone Case — CoverGhar"
-        description="Create personalized mobile covers with your photos at ₹199. Premium quality phone cases for iPhone, Samsung, OnePlus & all brands. Fast shipping across India. Design now!"
-        keywords="custom mobile covers, personalized phone cases, photo phone covers, design your own phone case, mobile cover online India, CoverGhar, custom phone case India, mobile back cover, buy mobile cover, phone case printing"
+        description="Design apna custom mobile cover! 🔥 Premium shockproof covers with HD printing. ₹199 se start. Free delivery all India. 1000+ designs. COD available. iPhone, Samsung, OnePlus, Redmi sab ke liye!"
+        keywords="custom mobile cover, personalized phone case, photo phone cover, design your own phone case, mobile cover online India, CoverGhar, custom phone case India, mobile back cover, buy mobile cover, phone case printing, shockproof mobile cover, printed mobile cover online, mobile cover under 200, naam wala cover, apna photo wala cover, mobile cover COD India, couple phone cases, anime phone case India"
         url="/"
         type="website"
         schema={homeSchema}
         additionalSchemas={advancedSchemas}
-        imageAlt="CoverGhar - Custom Mobile Covers Online India"
+        imageAlt="CoverGhar - Custom Mobile Covers Online India - Design Your Own Phone Case"
         breadcrumbs={[{ name: 'Home', url: '/' }]}
       />
       {/* HERO SECTION — renders instantly, no API dependency */}
@@ -248,7 +384,7 @@ function PremiumHero() {
                 </span>
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-lg leading-relaxed mx-auto lg:mx-0">
-                Design personalized phone cases with your photos. Premium quality printing for all phone models. Fast delivery across India.
+                Apna photo, apna design — sirf tumhara cover! Premium quality printing for 500+ phone models. Free delivery across India. COD available. 🇮🇳
               </p>
               
               {/* Mobile CTA buttons */}
@@ -299,7 +435,10 @@ function PremiumHero() {
       </section>
 
       <PremiumCardSection />
+      <TrustSignals />
+      <PopularCategories />
       <CTASection />
+      <FAQSection />
     </div>
   );
 }

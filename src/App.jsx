@@ -30,6 +30,9 @@ const BottomNav = lazy(() => import('./components/BottomNav'));
 // Footer is below the fold - lazy load it
 const Footer = lazy(() => import('./components/Footer'));
 
+// WhatsApp float - deferred appearance (2.5s delay built-in)
+const WhatsAppFloat = lazy(() => import('./components/WhatsAppFloat'));
+
 // Critical pages - loaded immediately
 import Home from './pages/Home';
 
@@ -127,6 +130,9 @@ const Layout = () => (
           pauseOnHover
           theme="light"
         />
+      </Suspense>
+      <Suspense fallback={null}>
+        <WhatsAppFloat />
       </Suspense>
     </div>
   </ErrorBoundary>

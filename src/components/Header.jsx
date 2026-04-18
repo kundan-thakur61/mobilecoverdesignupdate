@@ -168,7 +168,7 @@ const Header = () => {
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   aria-label="Search for mobile covers by brand, model, or design"
                 />
-                <IconSearch className="absolute left-3 top-2.5 text-gray-400" aria-hidden="true" />
+                <IconSearch className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" aria-hidden="true" />
               </div>
             </form>
 
@@ -411,7 +411,7 @@ const Header = () => {
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
-                    <IconSearch className="absolute left-3 top-3 text-gray-400" aria-hidden="true" />
+                    <IconSearch className="absolute left-3 top-3 w-5 h-5 text-gray-400" aria-hidden="true" />
                   </div>
                 </form>
 

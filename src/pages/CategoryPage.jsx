@@ -240,7 +240,7 @@ const CategoryPage = () => {
       <SEO
         title={data.title}
         description={data.description}
-        keywords={data.keywords}
+        keywords={`${data.keywords}, buy ${data.label} cover online, ${data.label} mobile cover under 500, ${data.label} shockproof case, custom ${data.label} phone cover, ${data.label} cover COD India, best ${data.label} cover India`}
         url={`/category/${normalizedCategory}`}
         type="website"
         schema={pageSchema?.[0]}
@@ -254,6 +254,9 @@ const CategoryPage = () => {
           <Breadcrumb items={breadcrumbItems} light />
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-4 mb-4">{data.h1}</h1>
           <p className="text-lg text-white/80 max-w-2xl">{data.intro}</p>
+          {data.seoDescription && (
+            <p className="text-sm text-white/60 max-w-3xl mt-3 leading-relaxed">{data.seoDescription}</p>
+          )}
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               to="/customizer"
@@ -267,6 +270,17 @@ const CategoryPage = () => {
             >
               Browse Themes
             </Link>
+            <a
+              href={`https://wa.me/917827205492?text=${encodeURIComponent(`Hi 👋 CoverGhar,\n\nI'm looking for ${data.label} mobile covers.\nPlease share designs and prices! 😊`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-6 py-3 bg-[#25D366] rounded-xl font-semibold hover:bg-[#20BD5A] transition-colors"
+            >
+              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" />
+              </svg>
+              WhatsApp pe Poocho
+            </a>
           </div>
         </div>
       </section>
@@ -338,6 +352,41 @@ const CategoryPage = () => {
               {CATEGORY_DATA[cat].label} Covers
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Internal Links Section - SEO */}
+      <section className="bg-white py-10 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Related Links
+          </h3>
+          <div className="flex flex-wrap gap-2 text-sm">
+            <Link to="/customizer" className="px-3 py-1.5 bg-gray-100 rounded-lg text-gray-600 hover:text-purple-700 hover:bg-purple-50 transition-colors">
+              Custom Photo Covers
+            </Link>
+            <Link to="/products" className="px-3 py-1.5 bg-gray-100 rounded-lg text-gray-600 hover:text-purple-700 hover:bg-purple-50 transition-colors">
+              All Mobile Covers
+            </Link>
+            <Link to="/themes" className="px-3 py-1.5 bg-gray-100 rounded-lg text-gray-600 hover:text-purple-700 hover:bg-purple-50 transition-colors">
+              Designer Themes
+            </Link>
+            <Link to="/blog" className="px-3 py-1.5 bg-gray-100 rounded-lg text-gray-600 hover:text-purple-700 hover:bg-purple-50 transition-colors">
+              Mobile Cover Guide
+            </Link>
+            <Link to="/products?search=shockproof" className="px-3 py-1.5 bg-gray-100 rounded-lg text-gray-600 hover:text-purple-700 hover:bg-purple-50 transition-colors">
+              Shockproof Covers
+            </Link>
+            <Link to="/products?search=printed" className="px-3 py-1.5 bg-gray-100 rounded-lg text-gray-600 hover:text-purple-700 hover:bg-purple-50 transition-colors">
+              Printed Covers
+            </Link>
+            <Link to="/contact" className="px-3 py-1.5 bg-gray-100 rounded-lg text-gray-600 hover:text-purple-700 hover:bg-purple-50 transition-colors">
+              Contact Us
+            </Link>
+            <Link to="/shipping-policy" className="px-3 py-1.5 bg-gray-100 rounded-lg text-gray-600 hover:text-purple-700 hover:bg-purple-50 transition-colors">
+              Shipping Info
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -152,34 +152,69 @@ const ProductDetails = ({ productIdOverride }) => {
     "name": currentProduct.title,
     "description": currentProduct.description || currentProduct.subtitle || currentProduct.tagline || "Premium custom mobile cover",
     "image": heroImage,
+    "sku": currentProduct.sku || currentProduct._id,
     "brand": {
       "@type": "Brand",
-      "name": currentProduct.brand || "Custom Mobile Covers"
+      "name": currentProduct.brand || "CoverGhar"
     },
     "offers": {
       "@type": "Offer",
       "price": selectedVariant ? selectedVariant.price : (hasVariants ? Math.min(...availableVariants.map(v => v.price)) : 0),
       "priceCurrency": "INR",
+      "priceValidUntil": "2027-12-31",
       "availability": isInStock(currentProduct) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      "url": typeof window !== 'undefined' ? window.location.href : ''
+      "itemCondition": "https://schema.org/NewCondition",
+      "url": typeof window !== 'undefined' ? window.location.href : '',
+      "seller": {
+        "@type": "Organization",
+        "name": "CoverGhar"
+      },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "INR" },
+        "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "IN" },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
+          "transitTime": { "@type": "QuantitativeValue", "minValue": 3, "maxValue": 7, "unitCode": "DAY" }
+        }
+      },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": "IN",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 7,
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": "https://schema.org/FreeReturn"
+      }
     },
     "aggregateRating": ratingValue > 0 ? {
       "@type": "AggregateRating",
       "ratingValue": ratingValue,
-      "reviewCount": ratingCount
+      "reviewCount": ratingCount,
+      "bestRating": "5",
+      "worstRating": "1"
     } : undefined
   };
 
   return (
     <>
       <SEO
-        title={`${currentProduct.title} | ${currentProduct.brand || 'Mobile Cover'}`}
-        description={currentProduct.description || currentProduct.subtitle || currentProduct.tagline || `Premium ${currentProduct.title} for ${currentProduct.model}. Custom design, high quality protection.`}
-        keywords={`${currentProduct.title}, ${currentProduct.brand}, ${currentProduct.model}, mobile cover, phone case`}
+        title={`${currentProduct.title} | ${currentProduct.brand || 'Mobile Cover'} — CoverGhar`}
+        description={`Buy ${currentProduct.title} online ₹${selectedVariant?.price || '199'} se. Premium shockproof ${currentProduct.brand || 'mobile'} cover with HD print. Free delivery India. COD available.`}
+        keywords={`${currentProduct.title}, ${currentProduct.brand} mobile cover, ${currentProduct.model} cover, ${currentProduct.brand} phone case online India, buy ${currentProduct.model} cover, shockproof ${currentProduct.brand} case, custom ${currentProduct.brand} cover, mobile cover under 500`}
         image={heroImage}
-        url={`/product/${resolvedProductId}`}
+        url={`/products/${resolvedProductId}`}
         type="product"
         schema={productSchema}
+        product={{
+          price: selectedVariant?.price || (hasVariants ? Math.min(...availableVariants.map(v => v.price)) : 199),
+          currency: 'INR',
+          availability: isInStock(currentProduct) ? 'in stock' : 'out of stock',
+          condition: 'new',
+          brand: currentProduct.brand || 'CoverGhar',
+          sku: currentProduct.sku || currentProduct._id,
+        }}
       />
       <div className="min-h-screen bg-[#faf7f2] text-gray-900">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
@@ -355,6 +390,19 @@ const ProductDetails = ({ productIdOverride }) => {
               >
                 <FiHeart /> {isWishlisted ? 'Wishlisted' : 'Add to Wishlist'}
               </button>
+
+              {/* WhatsApp Product Enquiry CTA */}
+              <a
+                href={`https://wa.me/917827205492?text=${encodeURIComponent(`Hi 👋 CoverGhar Team,\n\nI'm interested in: ${currentProduct.title}${selectedVariant ? ` (${selectedVariant.color || selectedVariant.name})` : ''}\nModel: ${currentProduct.model || 'Not specified'}\n\nPlease share price & delivery details! 😊`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-2 py-4 rounded-full bg-[#25D366] text-white font-semibold hover:bg-[#20BD5A] transition-colors"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" />
+                </svg>
+                WhatsApp pe Poocho
+              </a>
 
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <span className={`w-2 h-2 rounded-full ${isInStock(currentProduct) ? 'bg-green-500' : 'bg-red-500'}`} />

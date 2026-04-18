@@ -85,9 +85,9 @@ export function generateLocalBusinessSchema() {
     "priceRange": "₹₹",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "Neemuch",
-      "addressRegion": "Madhya Pradesh",
-      "postalCode": "458441",
+      "addressLocality": "Ranchi",
+      "addressRegion": "Jharkhand",
+      "postalCode": "825418",
       "addressCountry": "IN",
     },
     "aggregateRating": {
@@ -512,14 +512,14 @@ export function generateSlug(text) {
  */
 export function generatePageKeywords(pageType, dynamicTerms = []) {
   const baseKeywords = {
-    home: ['custom mobile covers', 'personalized phone cases', 'mobile cover online India', 'coverghar', 'photo phone cases', 'design phone case'],
-    products: ['buy mobile covers online', 'phone cases India', 'mobile back cover', 'phone cover designs', 'premium mobile cases'],
-    themes: ['mobile cover designs', 'themed phone cases', 'designer mobile covers', 'pre-designed phone cases', 'trendy mobile covers'],
-    customizer: ['design your own phone case', 'photo mobile cover maker', 'custom phone case creator', 'upload photo phone case', 'personalized cover design'],
-    blog: ['mobile cover tips', 'phone case guide', 'mobile accessories blog', 'custom cover ideas', 'phone protection tips'],
+    home: ['custom mobile covers', 'personalized phone cases', 'mobile cover online India', 'coverghar', 'photo phone cases', 'design phone case', 'mobile cover under 200', 'phone case COD India', 'shockproof mobile cover', 'naam wala cover'],
+    products: ['buy mobile covers online', 'phone cases India', 'mobile back cover', 'phone cover designs', 'premium mobile cases', 'printed mobile cover online', 'custom phone case India', 'mobile cover free delivery'],
+    themes: ['mobile cover designs', 'themed phone cases', 'designer mobile covers', 'pre-designed phone cases', 'trendy mobile covers', 'anime phone cases India', 'couple phone covers'],
+    customizer: ['design your own phone case', 'photo mobile cover maker', 'custom phone case creator', 'upload photo phone case', 'personalized cover design', 'apna photo wala cover', 'naam print mobile cover'],
+    blog: ['mobile cover tips', 'phone case guide', 'mobile accessories blog', 'custom cover ideas', 'phone protection tips', 'mobile cover kaise choose kare'],
     collection: ['mobile cover collection', 'themed phone covers', 'curated mobile cases', 'designer phone cases'],
-    category: ['mobile covers by brand', 'phone cases by model', 'brand mobile covers', 'model specific cases'],
-    contact: ['coverghar contact', 'mobile cover customer support', 'phone case help', 'coverghar support'],
+    category: ['mobile covers by brand', 'phone cases by model', 'brand mobile covers', 'model specific cases', 'shockproof phone cover India'],
+    contact: ['coverghar contact', 'mobile cover customer support', 'phone case help', 'coverghar support', 'coverghar whatsapp number'],
   };
 
   const base = baseKeywords[pageType] || baseKeywords.home;

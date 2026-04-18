@@ -279,6 +279,10 @@ const Footer = () => {
               OnePlus 12 Covers
             </Link>
             <span className="text-gray-700 hidden sm:inline">•</span>
+            <Link to="/products?search=Redmi%20Note%2013" className="text-gray-500 hover:text-primary-500 transition-colors">
+              Redmi Note 13 Pro Cases
+            </Link>
+            <span className="text-gray-700 hidden sm:inline">•</span>
             <Link to="/themes?category=anime" className="text-gray-500 hover:text-primary-500 transition-colors">
               Anime Covers
             </Link>
@@ -287,24 +291,32 @@ const Footer = () => {
               Custom Photo Covers
             </Link>
             <span className="text-gray-700 hidden md:inline">•</span>
-            <Link to="/themes?category=designer" className="text-gray-500 hover:text-primary-500 transition-colors hidden md:inline">
-              Designer Cases
+            <Link to="/products?search=shockproof" className="text-gray-500 hover:text-primary-500 transition-colors hidden md:inline">
+              Shockproof Covers
             </Link>
             <span className="text-gray-700 hidden md:inline">•</span>
-            <Link to="/products?search=Realme" className="text-gray-500 hover:text-primary-500 transition-colors hidden md:inline">
+            <Link to="/products?search=couple" className="text-gray-500 hover:text-primary-500 transition-colors hidden md:inline">
+              Couple Covers
+            </Link>
+            <span className="text-gray-700 hidden md:inline">•</span>
+            <Link to="/products?search=printed" className="text-gray-500 hover:text-primary-500 transition-colors hidden md:inline">
+              Printed Mobile Covers
+            </Link>
+            <span className="text-gray-700 hidden lg:inline">•</span>
+            <Link to="/category/realme" className="text-gray-500 hover:text-primary-500 transition-colors hidden lg:inline">
               Realme Covers
             </Link>
-            <span className="text-gray-700 hidden md:inline">•</span>
-            <Link to="/products?search=Vivo" className="text-gray-500 hover:text-primary-500 transition-colors hidden md:inline">
+            <span className="text-gray-700 hidden lg:inline">•</span>
+            <Link to="/category/vivo" className="text-gray-500 hover:text-primary-500 transition-colors hidden lg:inline">
               Vivo Covers
             </Link>
             <span className="text-gray-700 hidden lg:inline">•</span>
-            <Link to="/products?search=Oppo" className="text-gray-500 hover:text-primary-500 transition-colors hidden lg:inline">
+            <Link to="/category/oppo" className="text-gray-500 hover:text-primary-500 transition-colors hidden lg:inline">
               Oppo Covers
             </Link>
             <span className="text-gray-700 hidden lg:inline">•</span>
-            <Link to="/products?search=Xiaomi" className="text-gray-500 hover:text-primary-500 transition-colors hidden lg:inline">
-              Xiaomi Covers
+            <Link to="/category/xiaomi" className="text-gray-500 hover:text-primary-500 transition-colors hidden lg:inline">
+              Xiaomi / Poco Covers
             </Link>
           </div>
         </div>
